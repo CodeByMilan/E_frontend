@@ -1,8 +1,25 @@
-import React from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
+import { FormProps, UserDataTypes } from "../types";
+const Form:React.FC <FormProps> = ({ type,onSubmit} ) => {
+  const [userData,setUserData]=useState<UserDataTypes>({
+    email:"",
+    password:"",
+    username:""
+  })
 
-const Form = (props:any) => {
-  const { type } = props;
+  const handleChange=(e:ChangeEvent<HTMLInputElement>)=>{
+const {name,value}=e.target
+setUserData({
+    //just change the data that have been changed in sucha way that the rest of the data remains the same
+    ...userData,
+    [name]:value,
+})
+  }
+  const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
+    e.preventDefault()
+    onSubmit(userData)
+  }
   return (
     <>
       <div className="flex items-center mt-0 justify-center h-screen">
@@ -10,15 +27,16 @@ const Form = (props:any) => {
           <h1 className="text-center font-serif font-bold text-3xl mb-10">
             {type}
           </h1>
-          <form className="max-w-sm mx-auto">
+          <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
             <div className="relative z-0 w-full mb-5 group">
               <input
                 type="email"
-                name="floating_email"
-                id="floating_email"
+                name="email"
+                id="email"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 required
+                onChange={handleChange}
               />
               <label
                 htmlFor="floating_email"
@@ -30,10 +48,11 @@ const Form = (props:any) => {
             <div className="relative z-0 w-full mb-5 group">
               <input
                 type="password"
-                name="floating_password"
-                id="floating_password"
+                name="password"
+                id="password"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
+                onChange={handleChange}
                 required
               />
               <label
@@ -45,73 +64,26 @@ const Form = (props:any) => {
             </div>
             {type == "Register" && (
               <>
-                <div className="relative z-0 w-full mb-5 group">
-                  <input
-                    type="password"
-                    name="repeat_password"
-                    id="floating_repeat_password"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="floating_repeat_password"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Confirm password
-                  </label>
-                </div>
                 <div className="grid md:grid-cols-2 md:gap-6">
                   <div className="relative z-0 w-full mb-5 group">
                     <input
                       type="text"
-                      name="floating_first_name"
-                      id="floating_first_name"
+                      name="username"
+                      id="username"
                       className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                       placeholder=" "
                       required
+                      onChange={handleChange}
                     />
                     <label
                       htmlFor="floating_first_name"
                       className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                     >
-                      First name
+                      Username
                     </label>
-                  </div>
-                  <div className="relative z-0 w-full mb-5 group">
-                    <input
-                      type="text"
-                      name="floating_last_name"
-                      id="floating_last_name"
-                      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                      placeholder=" "
-                      required
-                    />
-                    <label
-                      htmlFor="floating_last_name"
-                      className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                    >
-                      Last name
-                    </label>
-                  </div>
-                </div>
-                <div className="relative z-0 w-full mb-5 group">
-                  <input
-                    type="tel"
-                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                    name="floating_phone"
-                    id="floating_phone"
-                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    htmlFor="floating_phone"
-                    className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Phone number (123-456-7890)
-                  </label>
-                </div>
+                    </div>
+                    </div>
+                
               </>
             )}
             <div className="flex justify-center">

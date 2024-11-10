@@ -5,10 +5,7 @@ import API from "../http";
 interface RegisterUser {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: number;
-  userName: string;
+  username:string
 }
 
 interface LoginData {
@@ -17,14 +14,13 @@ interface LoginData {
 }
 
 interface User {
-  userName: string;
   email: string;
   password: string;
   token: string;
 }
 
 interface AuthState {
-  user: User | null;
+  user: User ;
   //network request:hen we hit the api
   status: string;
 }
@@ -34,7 +30,7 @@ const initialState: AuthState = {
   // email :null,
   // password :null,
   user: {} as User,
-  status: '',
+  status: authStatus.loading,
 };
 const authSlice = createSlice({
   //name of a slice
@@ -49,10 +45,17 @@ const authSlice = createSlice({
     setStatus(state: AuthState, action: PayloadAction<string>) {
       state.status = action.payload;
     },
+    resetStatus(state:AuthState){
+      state.status =authStatus.loading
+    },
+    setToken(state:AuthState,action:PayloadAction<string>){
+    state.user.token = action.payload
+
+    }
   },
 });
 //name of reducer and action should be same as the reduxtoolkit will make the action automatically
-export const { setUser, setStatus } = authSlice.actions;
+export const { setUser, setStatus,resetStatus,setToken} = authSlice.actions;
 export default authSlice.reducer;
 
 export function register(data: RegisterUser) {
@@ -60,7 +63,7 @@ export function register(data: RegisterUser) {
     dispatch(setStatus(authStatus.loading))
     try {
       const response = await API.post("/register", data);
-      if (response.status == 201) {
+      if (response.status == 200) {
         dispatch(setStatus(authStatus.success))
 
       } else {
@@ -80,7 +83,10 @@ export function login(data: LoginData) {
     try{
         const response =await API.post("/login",data)
         if(response.status ===200){
+          const {data}=response.data
             dispatch(setStatus(authStatus.success))
+            dispatch(setToken(data.token))
+            localStorage.setItem('token',data)
         }
         else{
             dispatch(setStatus(authStatus.error))
