@@ -50,12 +50,14 @@ const authSlice = createSlice({
     },
     setToken(state:AuthState,action:PayloadAction<string>){
     state.user.token = action.payload
-
+    },
+    resetToken(state:AuthState){
+      state.user.token = ''
     }
   },
 });
 //name of reducer and action should be same as the reduxtoolkit will make the action automatically
-export const { setUser, setStatus,resetStatus,setToken} = authSlice.actions;
+export const { setUser, setStatus,resetStatus,setToken,resetToken} = authSlice.actions;
 export default authSlice.reducer;
 
 export function register(data: RegisterUser) {
