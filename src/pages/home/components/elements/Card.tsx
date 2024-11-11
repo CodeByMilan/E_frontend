@@ -7,7 +7,6 @@ interface CardProps{
 
 const Card:React.FC<CardProps> = ({data}) => {
   if (!data) return <p>No data to display</p>;
-  console.log("hello:",data)
   return (
     
     <>

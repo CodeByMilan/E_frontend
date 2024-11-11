@@ -26,5 +26,6 @@ export interface Product{
 }
 export interface ProductState{
     product:Product[],
-    status:authStatus
+    status:authStatus,
+    singleProduct:Product|null
 }

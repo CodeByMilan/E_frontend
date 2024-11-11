@@ -4,10 +4,12 @@ import { authStatus } from "../storetypes/storeTypes";
 import { Product } from "../storetypes/productTypes";
 import { AppDispatch } from "./store";
 import API from "../http";
+import { RootState } from "./store";
 
 const initialState: ProductState = {
   product: [],
   status: authStatus.loading,
+  singleProduct: null
 };
 const productSlice = createSlice({
   name: "product",
@@ -19,9 +21,12 @@ const productSlice = createSlice({
     setStatus(state: ProductState, action: PayloadAction<authStatus>) {
       state.status = action.payload;
     },
+    setSingleProduct(state: ProductState, action: PayloadAction<Product>) {
+      state.singleProduct = action.payload;
+    },
   },
 });
-export const { setProduct, setStatus } = productSlice.actions;
+export const { setProduct, setStatus, setSingleProduct } = productSlice.actions;
 export default productSlice.reducer;
 
 export function fetchProducts() {
@@ -30,7 +35,7 @@ export function fetchProducts() {
     try {
       const response = await API.get("/product");
       if (response.status == 200) {
-        const data = response.data;
+        const { data } = response.data;
         dispatch(setStatus(authStatus.success));
         dispatch(setProduct(data));
       } else {
@@ -41,3 +46,35 @@ export function fetchProducts() {
     }
   };
 }
+
+export function fetchProductById(productId: string) {
+  return async function fetchProductByIdThunk(dispatch: AppDispatch, getState: () => RootState) {
+    const state = getState();
+    const existingProduct = state.products.product.find((product: Product) => product.id === productId)
+      if(existingProduct){
+        dispatch(setSingleProduct(existingProduct))
+        dispatch(setStatus(authStatus.success))
+        
+      }
+      else {
+      dispatch(setStatus(authStatus.loading))
+    try {
+      const response = await API.get(`/product/${productId}`);
+      if (response.status == 200) {
+        const { data } = response.data;
+        dispatch(setStatus(authStatus.success));
+        dispatch(setSingleProduct(data));
+        
+      }
+      else {
+        dispatch(setStatus(authStatus.error));
+      }
+    }
+    catch (error) {
+      dispatch(setStatus(authStatus.error));
+    }
+  }
+  }
+}
+
+
