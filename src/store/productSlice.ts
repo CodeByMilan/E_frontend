@@ -3,7 +3,7 @@ import { ProductState } from "../storetypes/productTypes";
 import { authStatus } from "../storetypes/storeTypes";
 import { Product } from "../storetypes/productTypes";
 import { AppDispatch } from "./store";
-import API from "../http";
+import {API} from "../http";
 import { RootState } from "./store";
 
 const initialState: ProductState = {

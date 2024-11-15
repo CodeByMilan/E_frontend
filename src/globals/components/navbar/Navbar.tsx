@@ -2,15 +2,19 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { resetToken } from '../../../store/authSlice'
+import { fetchCartItems } from '../../../store/cartSlice'
 
 const Navbar = () => {
   const navigate =useNavigate()
   const dispatch =useAppDispatch()
   const {user} = useAppSelector((state)=>state.auth)
   const [isLoggedIn,setIsLoggedIn]=useState<boolean>(false)
+
+  const {items}=useAppSelector((state)=>state.cart)
   useEffect(()=>{
     const token = localStorage.getItem('token')
     setIsLoggedIn(!!token||!!user.token)
+    dispatch(fetchCartItems())
   },[user.token])
 
   const handleLogout = () => {
@@ -72,7 +76,9 @@ const Navbar = () => {
                 </Link>
               </li>
               </>
-               ):<li>
+               ):
+               <>
+               <li>
                <Link
                  to="/login"
                  onClick={handleLogout}
@@ -81,6 +87,16 @@ const Navbar = () => {
                  Logout
                </Link>
              </li>
+             <li>
+             <Link
+               to="/cart"
+               className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+             >
+               Cart
+               <sup>{items.length}</sup>
+             </Link>
+           </li>
+           </>
              }
             </ul>
           </div>
