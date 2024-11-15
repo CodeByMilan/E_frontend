@@ -87,7 +87,7 @@ export function login(data: LoginData) {
         if(response.status ===200){
           const {data}=response.data
             dispatch(setStatus(authStatus.success))
-            dispatch(setToken(data.token))
+            dispatch(setToken(data))
             localStorage.setItem('token',data)
         }
         else{
