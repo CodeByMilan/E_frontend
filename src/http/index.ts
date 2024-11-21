@@ -16,7 +16,7 @@ const APIAuthenticated=axios.create({
         "Content-Type": "application/json",
         //backend to frontend
         'Accept':'application/json',
-        'Authorization':`${localStorage.getItem('token')}`
+        "Authorization": localStorage.getItem('token') || '',
     }
 })
 

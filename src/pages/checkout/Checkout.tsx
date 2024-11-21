@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import Navbar from '../../globals/components/navbar/Navbar'
 import { useAppSelector } from '../../store/hooks'
 import { ItemDetails, OrderData, PaymentMethod } from '../../storetypes/checkoutTypes'
@@ -27,7 +27,6 @@ const Checkout = () => {
       }
     })
   }
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setData({
