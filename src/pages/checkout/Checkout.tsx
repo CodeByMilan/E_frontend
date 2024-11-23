@@ -1,10 +1,17 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import Navbar from '../../globals/components/navbar/Navbar'
-import { useAppSelector } from '../../store/hooks'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { ItemDetails, OrderData, PaymentMethod } from '../../storetypes/checkoutTypes'
+import { orderItem, setOrder } from '../../store/checkoutSlice'
+import { authStatus } from '../../storetypes/storeTypes'
+import { useNavigate } from 'react-router-dom'
 
 const Checkout = () => {
   const { items } = useAppSelector((state) => state.cart)
+  const { khaltiUrl,status} = useAppSelector((state) => state.order)
+  const dispatch =useAppDispatch()
+  const navigate = useNavigate()
+  console.log("hello",khaltiUrl)
   console.log(items)
 
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.cod)
@@ -34,8 +41,9 @@ const Checkout = () => {
       [name]: value
     })
   }
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  
+  let SubTotal = items.reduce((total, item) => total + (item?.Product?.price * item?.quantity || 0), 0)
+  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const itemDetails: ItemDetails[] = items.map((item) => ({
@@ -43,12 +51,22 @@ const Checkout = () => {
       quantity: item.quantity
     }))
 
-    const totalAmount = items.reduce((total, item) => total + (item?.Product?.price * item?.quantity || 0), 0)
+ 
 
     const orderData = {
       ...data,
       items: itemDetails,
-      totalAmount
+      totalAmount:SubTotal
+    }
+    await dispatch(orderItem(orderData))
+    if(status==authStatus.success){
+      alert("order placed successfully")
+      navigate("/")
+    }
+    if(khaltiUrl){
+      console.log("khalti:",khaltiUrl);
+      
+      window.location.href = khaltiUrl
     }
     
     console.log(orderData)
@@ -83,7 +101,7 @@ const Checkout = () => {
 
               <div className="md:absolute md:left-0 md:bottom-0 bg-gray-800 w-full p-4">
                 <h4 className="flex flex-wrap gap-4 text-base text-white">
-                  Total <span className="ml-auto">${items.reduce((total, item) => total + (item.Product.price * item.quantity), 0)}</span>
+                 Sub Total <span className="ml-auto">${items.reduce((total, item) => total + (item.Product.price * item.quantity), 0)}</span>
                 </h4>
               </div>
             </div>
@@ -93,11 +111,11 @@ const Checkout = () => {
             <h2 className="text-2xl font-bold text-gray-800">Complete your order</h2>
             <form className="mt-8" onSubmit={handleSubmit}>
               <div>
-                <h3 className="text-base text-gray-800 mb-4">Personal Details</h3>
+                <h3 className="text-base text-gray-800 mb-4">Phone Number</h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <input 
-                      type="number" 
+                      type="string" 
                       placeholder="Phone No." 
                       name="phoneNumber" 
                       className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600" 
@@ -121,6 +139,16 @@ const Checkout = () => {
                   </div>
                 </div>
               </div>
+              <div className="mt-8 relative flex  ">
+                <h3 className="text-base text-gray-800 mb-4">Shipping Fee</h3>
+                <span className='mx-20'>$10</span>
+      
+                    </div>
+                    <div className="mt-8 relative flex  ">
+                <h3 className="text-base text-gray-800 mb-4">Total</h3>
+                <span className='mx-20'>${SubTotal+10}</span>
+      
+                    </div>
 
               <div className="mt-8">
                 <h3 className="text-base text-gray-800 mb-4">Payment Method</h3>
@@ -150,10 +178,24 @@ const Checkout = () => {
                 </div>
               </div>
 
+              {
+                paymentMethod === PaymentMethod.khalti ? (
+                  <div className="flex gap-4 max-md:flex-col mt-8">
+              <button type="submit" className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-purple-600 hover:bg-purple-700 text-white">Pay with khalti </button>
+              </div>
+              ) : (
+                <div className="flex gap-4 max-md:flex-col mt-8">
+                <button type="submit" className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-blue-600 hover:bg-blue-700 text-white">Complete Purchase</button>
+                </div>
+                )
+
+              }
+               
+            
+             
               <div className="flex gap-4 max-md:flex-col mt-8">
                 <button type="button" className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-transparent hover:bg-gray-100 border border-gray-300 text-gray-800 max-md:order-1">Cancel</button>
-                <button type="submit" className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-blue-600 hover:bg-blue-700 text-white">Complete Purchase</button>
-              </div>
+                </div>
             </form>
           </div>
         </div>
