@@ -31,12 +31,13 @@ export interface OrderResponseData{
     myOrders:MyOrderData[]
     myOrderDetails:OrderDetails[]
 }
-enum OrderStatus{
+export enum OrderStatus{
     Pending="pending",
     Delivered="delivered",
     Cancelled="cancelled",
     Ontheway="ontheWay",
-    Preparation="preparation"
+    Preparation="preparation",
+    all="all"
 
 }
 
