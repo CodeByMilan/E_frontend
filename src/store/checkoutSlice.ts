@@ -6,6 +6,7 @@ import {
   OrderDetails,
   OrderResponseData,
   OrderResponseItem,
+  OrderStatus,
 } from "../storetypes/checkoutTypes";
 import { AppDispatch } from "./store";
 import { APIAuthenticated } from "../http";
@@ -51,10 +52,16 @@ const orderSlice = createSlice({
     ) {
       state.myOrderDetails=action.payload;
     },
+    updateOrderStatus(state:OrderResponseData,action:PayloadAction<{status:OrderStatus,orderId:string}>){
+      const status =action.payload.status;
+      const orderId = action.payload.orderId;
+     const updateOrder= state.myOrders.map(order=>order.id == orderId?{...order,orderStatus:status}:order)
+      state.myOrders=updateOrder
+    }
   },
 });
 
-export const { setOrder, setStaus, setKhaltiUrl ,setMyOrders,setMyOrderDetails} = orderSlice.actions;
+export const { setOrder, setStaus, setKhaltiUrl ,setMyOrders,setMyOrderDetails,updateOrderStatus} = orderSlice.actions;
 export default orderSlice.reducer;
 
 export function orderItem(data: OrderData) {
@@ -110,3 +117,8 @@ export function fetchMyOrders() {
       }
     };
   }
+  export function updateOrderStatusInStore(data:any){
+    return async function updateOrderStatusInStoreThunk(dispatch: AppDispatch) {
+      dispatch(updateOrderStatus(data))
+  }
+}

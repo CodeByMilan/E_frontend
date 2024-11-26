@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../../globals/components/navbar/Navbar'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { fetchMyOrders } from '../../store/checkoutSlice'
+import { fetchMyOrders, updateOrderStatusInStore } from '../../store/checkoutSlice'
 import { OrderStatus } from '../../storetypes/checkoutTypes'
+import { socket } from '../../App'
 
 export const MyOrders = () => {
     const dispatch=useAppDispatch()
@@ -21,6 +22,11 @@ export const MyOrders = () => {
     const [date,setDate]=useState<string>("")
     
   const filterOrders=  myOrders.filter((order)=> selectedItem===OrderStatus.all || order.orderStatus === selectedItem).filter((order)=>order.id.toLowerCase().includes(searchTerm) || order.Payment.paymentMethod.toLowerCase().includes(searchTerm)||order.totalAmount.toString().includes(searchTerm)).filter((order)=>date ==""||new Date(order.createdAt).toLocaleDateString()===new Date(date).toLocaleDateString())
+  useEffect(()=>{
+    socket.on("statusUpdated",(data:any)=>{
+        dispatch(updateOrderStatusInStore(data))
+    })
+  })
   return (
     <>
     <Navbar/>
