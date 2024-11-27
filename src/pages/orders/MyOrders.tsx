@@ -26,7 +26,7 @@ export const MyOrders = () => {
     socket.on("statusUpdated",(data:any)=>{
         dispatch(updateOrderStatusInStore(data))
     })
-  })
+},[socket])
   return (
     <>
     <Navbar/>

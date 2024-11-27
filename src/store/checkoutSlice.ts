@@ -52,11 +52,16 @@ const orderSlice = createSlice({
     ) {
       state.myOrderDetails=action.payload;
     },
-    updateOrderStatus(state:OrderResponseData,action:PayloadAction<{status:OrderStatus,orderId:string}>){
-      const status =action.payload.status;
-      const orderId = action.payload.orderId;
-     const updateOrder= state.myOrders.map(order=>order.id == orderId?{...order,orderStatus:status}:order)
-      state.myOrders=updateOrder
+    updateOrderStatus(state: OrderResponseData, action: PayloadAction<{ status: OrderStatus, orderId: string }>) {
+      const { status, orderId } = action.payload;
+    
+      // Ensure you are mapping over the orders and updating only the matching one
+      const updatedOrders = state.myOrders.map(order =>
+        order.id === orderId ? { ...order, orderStatus: status } : order
+      );
+    
+      // Make sure to update the state with the updated orders
+      state.myOrders = updatedOrders;
     }
   },
 });
@@ -65,7 +70,9 @@ export const { setOrder, setStaus, setKhaltiUrl ,setMyOrders,setMyOrderDetails,u
 export default orderSlice.reducer;
 
 export function orderItem(data: OrderData) {
+  console.log("Dispatching action with data:", data);
   return async function orderItemThunk(dispatch: AppDispatch) {
+    console.log("Dispatching action with data:", data);
     dispatch(setStaus(authStatus.loading));
     try {
       const response = await APIAuthenticated.post("/order", data);
