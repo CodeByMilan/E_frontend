@@ -52,17 +52,13 @@ const orderSlice = createSlice({
     ) {
       state.myOrderDetails=action.payload;
     },
-    updateOrderStatus(state: OrderResponseData, action: PayloadAction<{ status: OrderStatus, orderId: string }>) {
-      const { status, orderId } = action.payload;
-    
-      // Ensure you are mapping over the orders and updating only the matching one
-      const updatedOrders = state.myOrders.map(order =>
-        order.id === orderId ? { ...order, orderStatus: status } : order
-      );
-    
-      // Make sure to update the state with the updated orders
-      state.myOrders = updatedOrders;
-    }
+    updateOrderStatus(state:OrderResponseData, action:PayloadAction<{status:OrderStatus,orderId:string}>){
+      //console.log("Debugging updateOrderStatus",action.payload);
+      const status = action.payload.status 
+      const orderId = action.payload.orderId
+      const updatedOrder = state.myOrders.map(order=>order.id == orderId ? {...order,orderStatus : status} : order)
+      state.myOrders = updatedOrder
+  }
   },
 });
 

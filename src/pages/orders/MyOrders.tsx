@@ -12,21 +12,28 @@ export const MyOrders = () => {
     useEffect(()=>{
         dispatch(fetchMyOrders())
     },[])
-    console.log(myOrders);
+    //console.log(myOrders);
 
     const [selectedItem , setSelectedItem]=useState<OrderStatus>(OrderStatus.all)
 
 
     const [searchTerm , setSearchTerm]=useState<string>("")
-    console.log(selectedItem)
+    //console.log(selectedItem)
     const [date,setDate]=useState<string>("")
     
   const filterOrders=  myOrders.filter((order)=> selectedItem===OrderStatus.all || order.orderStatus === selectedItem).filter((order)=>order.id.toLowerCase().includes(searchTerm) || order.Payment.paymentMethod.toLowerCase().includes(searchTerm)||order.totalAmount.toString().includes(searchTerm)).filter((order)=>date ==""||new Date(order.createdAt).toLocaleDateString()===new Date(date).toLocaleDateString())
-  useEffect(()=>{
-    socket.on("statusUpdated",(data:any)=>{
-        dispatch(updateOrderStatusInStore(data))
-    })
-},[socket])
+ //socket implementation
+  useEffect(() => {
+    socket.on("statusUpdated", (data: any) => {
+      console.log("Received status update:", data);
+      dispatch(updateOrderStatusInStore(data));
+    });
+  
+    return () => {
+      socket.off("statusUpdated");
+    };
+  }, []);
+  
   return (
     <>
     <Navbar/>

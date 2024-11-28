@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { resetToken } from '../../../store/authSlice'
 import { fetchCartItems } from '../../../store/cartSlice'
+import logo from '../../../assets/logo.png'
 
 const Navbar = () => {
   const navigate =useNavigate()
@@ -33,9 +34,9 @@ const Navbar = () => {
             to="/"
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
-            <img src="" className="h-8" alt="Mindspace logo" />
+            <img src={logo} className="h-8" alt="Mindspace logo" />
             <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
-              Mindspace
+            Essentls 
             </span>
           </Link>
           <div className="flex md:order-2">
@@ -48,14 +49,7 @@ const Navbar = () => {
                   Home
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/blog/add"
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
-                >
-                  Create Blog
-                </Link>
-              </li>
+             
               {!isLoggedIn?(
 
              <>
