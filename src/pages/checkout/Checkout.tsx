@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Navbar from "../../globals/components/navbar/Navbar";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -9,15 +9,17 @@ import {
 import { orderItem } from "../../store/checkoutSlice";
 import { authStatus } from "../../storetypes/storeTypes";
 import { Link, useNavigate } from "react-router-dom";
+import { deleteCartItem, setItems } from "../../store/cartSlice";
 
 const Checkout = () => {
-  const [submitting, setSubmitting] = useState(false);
   const { items } = useAppSelector((state) => state.cart);
   const { khaltiUrl, status } = useAppSelector((state) => state.order);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.cod);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
+    PaymentMethod.cod
+  );
   const [data, setData] = useState<OrderData>({
     phoneNumber: "",
     shippingAddress: "",
@@ -52,41 +54,33 @@ const Checkout = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const itemDetails: ItemDetails[] = items.map((item) => ({
+      productId: item.Product.id,
+      quantity: item.quantity,
+    }));
 
-    setSubmitting(true); 
+    const orderData = {
+      ...data,
+      items: itemDetails,
+      totalAmount: SubTotal,
+    };
 
-    try {
-      const itemDetails: ItemDetails[] = items.map((item) => ({
-        productId: item.Product.id,
-        quantity: item.quantity,
-      }));
-
-      const orderData = {
-        ...data,
-        items: itemDetails,
-        totalAmount: SubTotal,
-      };
-
-      await dispatch(orderItem(orderData)); 
-
-      if (status === authStatus.success) {
-        alert("Order placed successfully");
-        navigate("/"); 
-      } else {
-        alert("Failed to place order. Please try again.");
-      }
-
-      if (khaltiUrl) {
-        console.log("Redirecting to Khalti:", khaltiUrl);
-        window.location.href = khaltiUrl;
-      }
-    } catch (error) {
-      console.error("Error placing order:", error);
-      alert("Something went wrong. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
+    await dispatch(orderItem(orderData)).then(()=>{
+      dispatch(setItems([]))
+    })
   };
+  useEffect(() => {
+    console.log("hello from useEffect");
+    if (khaltiUrl) {
+      console.log("Redirecting to Khalti:", khaltiUrl);
+      window.location.href = khaltiUrl;
+      return;
+    }
+    if (status === authStatus.success) {
+      alert("Order placed successfully");
+      navigate("/myorders");
+    }
+  }, [status, khaltiUrl]);
 
   return (
     <>
@@ -99,7 +93,10 @@ const Checkout = () => {
                 <div className="space-y-4">
                   {items.length > 0 &&
                     items.map((item) => (
-                      <div key={item.Product.id} className="flex items-start gap-4">
+                      <div
+                        key={item.Product.id}
+                        className="flex items-start gap-4"
+                      >
                         <div className="w-32 h-28 max-lg:w-24 max-lg:h-24 flex p-3 shrink-0 bg-gray-300 rounded-md">
                           <img
                             src={item.Product.productImageUrl}
@@ -148,7 +145,9 @@ const Checkout = () => {
           </div>
 
           <div className="max-w-4xl w-full h-max rounded-md px-4 py-8 sticky top-0">
-            <h2 className="text-2xl font-bold text-gray-800">Complete your order</h2>
+            <h2 className="text-2xl font-bold text-gray-800">
+              Complete your order
+            </h2>
             <form className="mt-8" onSubmit={handleSubmit}>
               <div>
                 <h3 className="text-base text-gray-800 mb-4">Phone Number</h3>
@@ -166,7 +165,9 @@ const Checkout = () => {
               </div>
 
               <div className="mt-8">
-                <h3 className="text-base text-gray-800 mb-4">Shipping Address</h3>
+                <h3 className="text-base text-gray-800 mb-4">
+                  Shipping Address
+                </h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <input
@@ -221,7 +222,6 @@ const Checkout = () => {
                   <button
                     type="submit"
                     className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-purple-600 hover:bg-purple-700 text-white"
-                    disabled={submitting}
                   >
                     Pay with Khalti
                   </button>
@@ -230,10 +230,9 @@ const Checkout = () => {
                 <div className="flex gap-4 max-md:flex-col mt-8">
                   <button
                     type="submit"
-                    disabled={submitting}
                     className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-blue-600 hover:bg-blue-700 text-white"
                   >
-                    {submitting ? "Processing..." : "Complete Purchase"}
+                    complete purchase
                   </button>
                 </div>
               )}

@@ -73,8 +73,9 @@ export function orderItem(data: OrderData) {
     try {
       const response = await APIAuthenticated.post("/order", data);
       if ((response.status = 200)) {
-        dispatch(setStaus(authStatus.success));
         dispatch(setOrder(response.data.data));
+        dispatch(setStaus(authStatus.success));
+        
         if (response.data.url) {
           dispatch(setKhaltiUrl(response.data.url));
         } else {

@@ -6,7 +6,6 @@ interface CardProps{
 }
 
 const Card:React.FC<CardProps> = ({data}) => {
-  let BACKENDURL="http://localhost:3000"
   if (!data) return <p>No data to display</p>;
   return (
     
