@@ -1,20 +1,26 @@
-import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Hero = () => {
   return (
    <>
-   <div className="relative w-full h-[320px]" id="home">
-    <div className="absolute inset-0 opacity-70">
-        <img src="https://image1.jdomni.in/banner/13062021/0A/52/CC/1AF5FC422867D96E06C4B7BD69_1623557926542.png" alt="Background Image" className="object-cover object-center w-full h-full" />
+   <div className="relative w-full h-[600px]" id="home">
+   <div className="absolute inset-0 opacity-100">
+    <video
+        src="https://videos.pexels.com/video-files/7287304/7287304-sd_640_360_25fps.mp4"
+        className="object-cover object-center w-full h-full"
+        autoPlay
+        loop
+        muted
+        playsInline
+    />
+</div>
 
-    </div>
-    <div className="absolute inset-9 flex flex-col md:flex-row items-center justify-between">
+    <div className="absolute inset-12 flex flex-col md:flex-row items-center justify-between">
         <div className="md:w-1/2 mb-4 md:mb-0">
-            <h1 className="text-grey-700 font-medium text-4xl md:text-5xl leading-tight mb-2">Bappa Flour mill</h1>
-            <p className="font-regular text-xl mb-8 mt-4">One stop solution for flour grinding services</p>
-            <a href="#contactUs"
-                className="px-6 py-3 bg-[#c8a876] text-white font-medium rounded-full hover:bg-[#c09858]  transition duration-200">Contact
-                Us</a>
+            <h1 className="text-grey-700 font-medium text-4xl md:text-5xl leading-tight mb-2">Sajha Pasal</h1>
+            <p className="font-regular text-2xl mb-8 mt-5">Our unity and cooperation create our shared market, where opportunities and prosperity await everyone.</p>
+            <Link to="#contactUs"
+                className="px-5 py-5 bg-yellow-500 text-white font-medium rounded-3xl hover:bg-[#c09858]  transition duration-200">Shop With Us</Link>
         </div>
     </div>
 </div>

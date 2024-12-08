@@ -1,76 +1,92 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
-import Navbar from '../../globals/components/navbar/Navbar'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { ItemDetails, OrderData, PaymentMethod } from '../../storetypes/checkoutTypes'
-import { orderItem, setOrder } from '../../store/checkoutSlice'
-import { authStatus } from '../../storetypes/storeTypes'
-import { useNavigate } from 'react-router-dom'
+import { ChangeEvent, FormEvent, useState } from "react";
+import Navbar from "../../globals/components/navbar/Navbar";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import {
+  ItemDetails,
+  OrderData,
+  PaymentMethod,
+} from "../../storetypes/checkoutTypes";
+import { orderItem } from "../../store/checkoutSlice";
+import { authStatus } from "../../storetypes/storeTypes";
+import { Link, useNavigate } from "react-router-dom";
 
 const Checkout = () => {
-  const { items } = useAppSelector((state) => state.cart)
-  const { khaltiUrl,status} = useAppSelector((state) => state.order)
-  const dispatch =useAppDispatch()
-  const navigate = useNavigate()
-  console.log("hello",khaltiUrl)
-  console.log(items)
+  const [submitting, setSubmitting] = useState(false);
+  const { items } = useAppSelector((state) => state.cart);
+  const { khaltiUrl, status } = useAppSelector((state) => state.order);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.cod)
-
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.cod);
   const [data, setData] = useState<OrderData>({
     phoneNumber: "",
     shippingAddress: "",
     totalAmount: 0,
     paymentDetails: { paymentMethod: PaymentMethod.cod },
-    items: []
-  })
+    items: [],
+  });
 
   const handlePaymentMethod = (e: ChangeEvent<HTMLInputElement>) => {
-    const selectedPaymentMethod = e.target.value as PaymentMethod
-    setPaymentMethod(selectedPaymentMethod)
+    const selectedPaymentMethod = e.target.value as PaymentMethod;
+    setPaymentMethod(selectedPaymentMethod);
     setData({
       ...data,
       paymentDetails: {
-        paymentMethod: selectedPaymentMethod
-      }
-    })
-  }
+        paymentMethod: selectedPaymentMethod,
+      },
+    });
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setData({
       ...data,
-      [name]: value
-    })
-  }
-  
-  let SubTotal = items.reduce((total, item) => total + (item?.Product?.price * item?.quantity || 0), 0)
-  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+      [name]: value,
+    });
+  };
 
-    const itemDetails: ItemDetails[] = items.map((item) => ({
-      productId: item.Product.id,
-      quantity: item.quantity
-    }))
+  let SubTotal = items.reduce(
+    (total, item) => total + (item?.Product?.price * item?.quantity || 0),
+    0
+  );
 
- 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    const orderData = {
-      ...data,
-      items: itemDetails,
-      totalAmount:SubTotal
+    setSubmitting(true); 
+
+    try {
+      const itemDetails: ItemDetails[] = items.map((item) => ({
+        productId: item.Product.id,
+        quantity: item.quantity,
+      }));
+
+      const orderData = {
+        ...data,
+        items: itemDetails,
+        totalAmount: SubTotal,
+      };
+
+      await dispatch(orderItem(orderData)); 
+
+      if (status === authStatus.success) {
+        alert("Order placed successfully");
+        navigate("/"); 
+      } else {
+        alert("Failed to place order. Please try again.");
+      }
+
+      if (khaltiUrl) {
+        console.log("Redirecting to Khalti:", khaltiUrl);
+        window.location.href = khaltiUrl;
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
-    await dispatch(orderItem(orderData))
-    if(status==authStatus.success){
-      alert("order placed successfully")
-      navigate("/")
-    }
-    if(khaltiUrl){
-      console.log("khalti:",khaltiUrl);
-      
-      window.location.href = khaltiUrl
-    }
-    
-    console.log(orderData)
-  }
+  };
 
   return (
     <>
@@ -81,27 +97,51 @@ const Checkout = () => {
             <div className="relative h-full">
               <div className="px-4 py-8 sm:overflow-auto sm:h-[calc(100vh-60px)]">
                 <div className="space-y-4">
-                  {items.length > 0 && items.map((item) => (
-                    <div key={item.Product.id} className="flex items-start gap-4">
-                      <div className="w-32 h-28 max-lg:w-24 max-lg:h-24 flex p-3 shrink-0 bg-gray-300 rounded-md">
-                        <img src={item.Product.productImageUrl} className="w-full object-contain" />
+                  {items.length > 0 &&
+                    items.map((item) => (
+                      <div key={item.Product.id} className="flex items-start gap-4">
+                        <div className="w-32 h-28 max-lg:w-24 max-lg:h-24 flex p-3 shrink-0 bg-gray-300 rounded-md">
+                          <img
+                            src={item.Product.productImageUrl}
+                            className="w-full object-contain"
+                          />
+                        </div>
+                        <div className="w-full">
+                          <h3 className="text-base text-white">
+                            {item.Product.productName}
+                          </h3>
+                          <ul className="text-xs text-gray-300 space-y-2 mt-2">
+                            <li className="flex flex-wrap gap-4">
+                              Size <span className="ml-auto">37</span>
+                            </li>
+                            <li className="flex flex-wrap gap-4">
+                              Quantity{" "}
+                              <span className="ml-auto">{item.quantity}</span>
+                            </li>
+                            <li className="flex flex-wrap gap-4">
+                              Price{" "}
+                              <span className="ml-auto">
+                                {item.Product.price}
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
-                      <div className="w-full">
-                        <h3 className="text-base text-white">{item.Product.productName}</h3>
-                        <ul className="text-xs text-gray-300 space-y-2 mt-2">
-                          <li className="flex flex-wrap gap-4">Size <span className="ml-auto">37</span></li>
-                          <li className="flex flex-wrap gap-4">Quantity <span className="ml-auto">{item.quantity}</span></li>
-                          <li className="flex flex-wrap gap-4">Price <span className="ml-auto">{item.Product.price}</span></li>
-                        </ul>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
 
               <div className="md:absolute md:left-0 md:bottom-0 bg-gray-800 w-full p-4">
                 <h4 className="flex flex-wrap gap-4 text-base text-white">
-                 Sub Total <span className="ml-auto">${items.reduce((total, item) => total + (item.Product.price * item.quantity), 0)}</span>
+                  Sub Total{" "}
+                  <span className="ml-auto">
+                    $
+                    {items.reduce(
+                      (total, item) =>
+                        total + item.Product.price * item.quantity,
+                      0
+                    )}
+                  </span>
                 </h4>
               </div>
             </div>
@@ -114,12 +154,12 @@ const Checkout = () => {
                 <h3 className="text-base text-gray-800 mb-4">Phone Number</h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <input 
-                      type="string" 
-                      placeholder="Phone No." 
-                      name="phoneNumber" 
-                      className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600" 
-                      onChange={handleChange} 
+                    <input
+                      type="string"
+                      placeholder="Phone No."
+                      name="phoneNumber"
+                      className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -129,79 +169,91 @@ const Checkout = () => {
                 <h3 className="text-base text-gray-800 mb-4">Shipping Address</h3>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <input 
-                      type="text" 
-                      placeholder="Address" 
-                      name="shippingAddress" 
-                      className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600" 
-                      onChange={handleChange} 
+                    <input
+                      type="text"
+                      placeholder="Address"
+                      name="shippingAddress"
+                      className="px-4 py-3 bg-gray-100 focus:bg-transparent text-gray-800 w-full text-sm rounded-md focus:outline-blue-600"
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
               </div>
-              <div className="mt-8 relative flex  ">
+              <div className="mt-8 relative flex">
                 <h3 className="text-base text-gray-800 mb-4">Shipping Fee</h3>
-                <span className='mx-20'>$10</span>
-      
-                    </div>
-                    <div className="mt-8 relative flex  ">
+                <span className="mx-20">$10</span>
+              </div>
+              <div className="mt-8 relative flex">
                 <h3 className="text-base text-gray-800 mb-4">Total</h3>
-                <span className='mx-20'>${SubTotal+10}</span>
-      
-                    </div>
+                <span className="mx-20">${SubTotal + 10}</span>
+              </div>
 
               <div className="mt-8">
                 <h3 className="text-base text-gray-800 mb-4">Payment Method</h3>
                 <div className="flex items-center gap-4">
                   <label className="flex items-center">
-                    <input 
-                      type="radio" 
-                      name="paymentMethod" 
-                      value={PaymentMethod.cod} 
-                      checked={paymentMethod === PaymentMethod.cod} 
-                      onChange={handlePaymentMethod} 
-                      className="mr-2" 
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value={PaymentMethod.cod}
+                      checked={paymentMethod === PaymentMethod.cod}
+                      onChange={handlePaymentMethod}
+                      className="mr-2"
                     />
                     Cash on Delivery (COD)
                   </label>
                   <label className="flex items-center">
-                    <input 
-                      type="radio" 
-                      name="paymentMethod" 
-                      value={PaymentMethod.khalti}  
-                      checked={paymentMethod === PaymentMethod.khalti} 
-                      onChange={handlePaymentMethod} 
-                      className="mr-2" 
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value={PaymentMethod.khalti}
+                      checked={paymentMethod === PaymentMethod.khalti}
+                      onChange={handlePaymentMethod}
+                      className="mr-2"
                     />
                     Khalti
                   </label>
                 </div>
               </div>
 
-              {
-                paymentMethod === PaymentMethod.khalti ? (
-                  <div className="flex gap-4 max-md:flex-col mt-8">
-              <button type="submit" className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-purple-600 hover:bg-purple-700 text-white">Pay with khalti </button>
-              </div>
+              {paymentMethod === PaymentMethod.khalti ? (
+                <div className="flex gap-4 max-md:flex-col mt-8">
+                  <button
+                    type="submit"
+                    className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-purple-600 hover:bg-purple-700 text-white"
+                    disabled={submitting}
+                  >
+                    Pay with Khalti
+                  </button>
+                </div>
               ) : (
                 <div className="flex gap-4 max-md:flex-col mt-8">
-                <button type="submit" className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-blue-600 hover:bg-blue-700 text-white">Complete Purchase</button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    {submitting ? "Processing..." : "Complete Purchase"}
+                  </button>
                 </div>
-                )
+              )}
 
-              }
-               
-            
-             
               <div className="flex gap-4 max-md:flex-col mt-8">
-                <button type="button" className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-transparent hover:bg-gray-100 border border-gray-300 text-gray-800 max-md:order-1">Cancel</button>
-                </div>
+                <Link to="/cart">
+                  <button
+                    type="button"
+                    className="rounded-md px-6 py-3 w-full text-sm tracking-wide bg-transparent hover:bg-gray-100 border border-gray-300 text-gray-800 max-md:order-1"
+                  >
+                    Cancel
+                  </button>
+                </Link>
+              </div>
             </form>
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Checkout
+export default Checkout;
