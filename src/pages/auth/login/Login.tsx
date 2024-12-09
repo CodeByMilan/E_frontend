@@ -1,4 +1,4 @@
-import  { useEffect } from 'react'
+import  { useEffect, useState } from 'react'
 import Navbar from '../../../globals/components/navbar/Navbar'
 import Form from '../form/Form'
 import { login, resetStatus } from '../../../store/authSlice'
@@ -9,6 +9,7 @@ import { UserloginType } from '../types'
 
 const Login = () => {
   const {status}=useAppSelector((state)=>state.auth)
+  const [error,setError]=useState<string|null>(null)
 
   const navigate =useNavigate()
   const dispatch =useAppDispatch()
@@ -16,21 +17,23 @@ const Login = () => {
     // console.log(data)
     dispatch(login(data))  
   }
+  const clearError = () => {
+    setError(null);
+  };
   useEffect (()=>{
     if(status===authStatus.success){
-
       dispatch(resetStatus())
       navigate("/")
+      setError(null)
     }
-    // else{
-    //   alert("something went wrong")
-    //   navigate("/register")
-    // }
+    if(status==authStatus.error){
+      setError("Invalid Creadentials Please check your email and password")
+    }
   },[status,navigate,dispatch])
   return (
     <>
     <Navbar/>
-      <Form type="Login" onSubmit={handlelogin}/>
+      <Form type="Login" onSubmit={handlelogin} error={error} onClearError={clearError}/>
     </>
   )
 }

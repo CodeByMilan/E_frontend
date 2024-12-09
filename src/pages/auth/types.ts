@@ -1,7 +1,9 @@
 
 export interface FormProps{
-    type:string;
+    type:string
     onSubmit:(data:UserDataTypes)=>void
+    error:string|null
+    onClearError?: () => void
 }
 export interface UserDataTypes{
     email:string,

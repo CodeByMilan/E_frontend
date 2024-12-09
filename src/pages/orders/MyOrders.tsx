@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../../globals/components/navbar/Navbar'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { fetchMyOrders, updateOrderStatusInStore } from '../../store/checkoutSlice'
+import { fetchMyOrders, setCheckoutStaus, updateOrderStatusInStore } from '../../store/checkoutSlice'
 import { OrderStatus } from '../../storetypes/checkoutTypes'
 import { socket } from '../../App'
+import { authStatus } from '../../storetypes/storeTypes'
 
 export const MyOrders = () => {
     const dispatch=useAppDispatch()
     const {myOrders}=useAppSelector((state)=>state.order)
     useEffect(()=>{
+        console.log("hello from myorders")
         dispatch(fetchMyOrders())
+        dispatch(setCheckoutStaus(authStatus.loading))
     },[])
     //console.log(myOrders);
 

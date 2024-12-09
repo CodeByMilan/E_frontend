@@ -80,6 +80,14 @@ const Navbar = () => {
                   </li>
                   <li>
                     <Link
+                      to="/myorders"
+                      className="block py-2 px-3 text-gray-900 rounded-md hover:bg-red-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
+                    >
+                      My orders
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
                       to="/cart"
                       className="relative block py-2 px-3 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
                     >

@@ -26,10 +26,11 @@ export interface OrderData{
 
 export interface OrderResponseData{
     items:OrderResponseItem[],
-    status:authStatus
+    checkoutStatus:authStatus,
     khaltiUrl:string|null,
-    myOrders:MyOrderData[]
-    myOrderDetails:OrderDetails[]
+    myOrders:MyOrderData[],
+    myOrderDetails:OrderDetails[],
+    status:authStatus
 }
 export enum OrderStatus{
     Pending="pending",
@@ -68,16 +69,21 @@ export interface MyOrderData{
     createdAt:string,
     paymentId:string,
     userId:UserData
-    Payment:OrderPaymentData
+    Payment:OrderPaymentData,
+    User:User
 }
 
-
+interface User{
+    email:string,
+    username:string
+}
 export interface OrderDetails {
     id:string,
     quantity:number,
     orderId:String,
     Product:Product,
     Order:MyOrderData
+    
 
 
 }

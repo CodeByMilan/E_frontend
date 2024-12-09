@@ -9,11 +9,12 @@ import {
 import { orderItem } from "../../store/checkoutSlice";
 import { authStatus } from "../../storetypes/storeTypes";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteCartItem, setItems } from "../../store/cartSlice";
+import {  setItems } from "../../store/cartSlice";
 
 const Checkout = () => {
+  const [message,setMessage]=useState<string|null>(null)
   const { items } = useAppSelector((state) => state.cart);
-  const { khaltiUrl, status } = useAppSelector((state) => state.order);
+  const { khaltiUrl, checkoutStatus } = useAppSelector((state) => state.order);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -76,15 +77,30 @@ const Checkout = () => {
       window.location.href = khaltiUrl;
       return;
     }
-    if (status === authStatus.success) {
-      alert("Order placed successfully");
-      navigate("/myorders");
+    if (checkoutStatus === authStatus.success) {
+      setMessage("Order placed successfully")
+      const timer = setTimeout(() => {
+        navigate("/myorders");
+      }, 2000); 
+      return () => clearTimeout(timer);
     }
-  }, [status, khaltiUrl]);
+  }, [checkoutStatus, khaltiUrl]);
 
   return (
     <>
       <Navbar />
+      {message && (
+    <div className="mb-4 p-4 bg-green-100 text-black rounded flex justify-between items-center">
+        <span>{message}</span>
+        <button
+            className="ml-4 text-green font-bold hover:text-green focus:outline-none"
+            onClick={() => setMessage(null)}
+            aria-label="Dismiss message"
+        >
+            ×
+        </button>
+    </div>
+)}
       <div className="font-[sans-serif] bg-white">
         <div className="flex max-sm:flex-col gap-12 max-lg:gap-4 h-full">
           <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 sm:h-screen sm:sticky sm:top-0 lg:min-w-[370px] sm:min-w-[300px]">

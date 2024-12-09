@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { FormProps, UserDataTypes } from "../types";
-const Form:React.FC <FormProps> = ({ type,onSubmit} ) => {
+const Form:React.FC <FormProps> = ({ type,onSubmit,error,onClearError} ) => {
   const [userData,setUserData]=useState<UserDataTypes>({
     email:"",
     password:"",
@@ -22,11 +22,25 @@ setUserData({
   }
   return (
     <>
+    {error && (
+      <div className="mb-4 p-4 bg-red-100 text-red-800 rounded flex justify-between items-center">
+        <span>{error}</span>
+        <button
+          className="ml-4 text-red-800 font-bold hover:text-red-600 focus:outline-none"
+          onClick={onClearError}
+          aria-label="Dismiss error"
+        >
+          ×
+        </button>
+      </div>
+    )}
       <div className="flex items-center mt-0 justify-center h-screen">
         <div className="shadow-md p-10 w-[60%] max-w-md">
+        
           <h1 className="text-center font-serif font-bold text-3xl mb-10">
             {type}
           </h1>
+          
           <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
             <div className="relative z-0 w-full mb-5 group">
               <input

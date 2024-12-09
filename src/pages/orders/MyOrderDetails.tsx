@@ -4,21 +4,22 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { fetchMyOrderDetails } from "../../store/checkoutSlice"
 import { useParams } from "react-router-dom"
 
-
-
-
 const MyOrderDetails = () => {
     const {id} =useParams()
+    console.log(id)
     const dipatch = useAppDispatch()
     const {myOrderDetails}=useAppSelector((state)=>state.order)
-    console.log(myOrderDetails)
+    console.log(myOrderDetails[0])
 
     useEffect(()=>{
+      console.log("hello from myorderdetails")
         if(id){
             dipatch(fetchMyOrderDetails(id))
         }
-    },[])
- 
+    },[id,dipatch])
+    if (myOrderDetails.length === 0) {
+      return <p>Loading...</p>; 
+    }
   return (
     <>
     <Navbar />
@@ -26,6 +27,8 @@ const MyOrderDetails = () => {
     
     <div className="flex justify-start item-start space-y-5 flex-col">
       <h1 className="text-1xl dark:text-white lg:text-2xl font-semibold leading-7 lg:leading-9 text-gray-600">Order Details </h1>
+      <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">{myOrderDetails[0]?.Order?.id}
+      </p>
       <p className="text-base dark:text-gray-300 font-medium leading-6 text-gray-600">{new Date(myOrderDetails[0]?.Order?.createdAt).toLocaleDateString
         ()}</p>
     </div>
@@ -107,6 +110,7 @@ const MyOrderDetails = () => {
           <div className="flex justify-between xl:h-full items-stretch w-full flex-col mt-6 md:mt-0">
             <div className="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row items-center md:items-start">
               <div className="flex justify-center md:justify-start items-center md:items-start flex-col space-y-4 xl:mt-8">
+              <p className="text-base dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">email: {myOrderDetails[0]?.Order?.User?.email}</p>
                 <p className="text-base dark:text-white font-semibold leading-4 text-center md:text-left text-gray-800">Address : {myOrderDetails[0]?.Order?.shippingAddress}</p>
                 <p className="w-48 lg:w-full dark:text-gray-300 xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">Phone : {myOrderDetails[0].Order?.phoneNumber} </p>
               </div>
