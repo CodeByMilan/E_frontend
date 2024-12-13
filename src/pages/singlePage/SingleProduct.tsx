@@ -31,7 +31,9 @@ const SingleProduct = () => {
         } 
         console.log("token value",token)
         if(cartStatus==authStatus.error){
-            if (token) {
+            const validation =localStorage.getItem("token")
+            console.log("hello",validation)
+            if (validation) {
                 dispatch(setStatus(authStatus.loading))
             }else{
             setError("Please log in to add the product to the cart.");

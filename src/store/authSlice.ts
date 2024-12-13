@@ -86,9 +86,11 @@ export function login(data: LoginData) {
         const response =await API.post("/login",data)
         if(response.status ===200){
           const {data}=response.data
-            dispatch(setStatus(authStatus.success))
+          // console.log(data)
+           
             dispatch(setToken(data))
             localStorage.setItem('token',data)
+            dispatch(setStatus(authStatus.success))
         }
         else{
             dispatch(setStatus(authStatus.error))

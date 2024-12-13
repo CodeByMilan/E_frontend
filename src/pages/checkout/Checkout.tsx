@@ -71,7 +71,7 @@ const Checkout = () => {
     })
   };
   useEffect(() => {
-    console.log("hello from useEffect");
+    //console.log("hello from useEffect");
     if (khaltiUrl) {
       console.log("Redirecting to Khalti:", khaltiUrl);
       window.location.href = khaltiUrl;
