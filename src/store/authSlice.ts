@@ -26,10 +26,11 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  // userName: null,
-  // email :null,
-  // password :null,
-  user: {} as User,
+  user: {
+    email: '',
+    password: '',
+    token: localStorage.getItem('token') || '', 
+  } as User,
   status: authStatus.loading,
 };
 const authSlice = createSlice({
@@ -86,8 +87,6 @@ export function login(data: LoginData) {
         const response =await API.post("/login",data)
         if(response.status ===200){
           const {data}=response.data
-          // console.log(data)
-           
             dispatch(setToken(data))
             localStorage.setItem('token',data)
             dispatch(setStatus(authStatus.success))

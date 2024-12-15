@@ -4,6 +4,8 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { resetToken } from '../../../store/authSlice'
 import { fetchCartItems } from '../../../store/cartSlice'
 import logoSajhaPasal from '../../../assets/logoSajhaPasal.png'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCartShopping, faHeart} from '@fortawesome/free-solid-svg-icons'
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -38,11 +40,11 @@ const Navbar = () => {
             </span>
           </Link>
           <div className="flex text-3xl md:order-2">
-            <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <ul className="flex flex-col p-3 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
               <li>
                 <Link
                   to="/"
-                  className="block py-2 px-3 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
+                  className="block py-2 px-2 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
                 >
                   Home
                 </Link>
@@ -53,7 +55,7 @@ const Navbar = () => {
                   <li>
                     <Link
                       to="/register"
-                      className="block py-2 px-3 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
+                      className="block py-2 px-2 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
                     >
                       Register
                     </Link>
@@ -61,7 +63,7 @@ const Navbar = () => {
                   <li>
                     <Link
                       to="/login"
-                      className="block py-2 px-3 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
+                      className="block py-2 px-2 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
                     >
                       Login
                     </Link>
@@ -73,7 +75,7 @@ const Navbar = () => {
                     <Link
                       to="/login"
                       onClick={handleLogout}
-                      className="block py-2 px-3 text-gray-900 rounded-md hover:bg-red-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
+                      className="block py-2 px-2 text-gray-900 rounded-md hover:bg-red-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
                     >
                       Logout
                     </Link>
@@ -81,9 +83,20 @@ const Navbar = () => {
                   <li>
                     <Link
                       to="/myorders"
-                      className="block py-2 px-3 text-gray-900 rounded-md hover:bg-red-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
+                      className="block py-2 px-2 text-gray-900 rounded-md hover:bg-red-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
                     >
                       My orders
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to=""
+                      className="relative block py-2 px-2 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
+                    >
+                      <FontAwesomeIcon icon={faHeart} className='text-black text-4xl'/>
+                      <sup className="absolute top-0 right-0 text-xs text-white bg-red-600 rounded-full px-2 py-1">
+                        {0}
+                      </sup>
                     </Link>
                   </li>
                   <li>
@@ -91,7 +104,7 @@ const Navbar = () => {
                       to="/cart"
                       className="relative block py-2 px-3 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
                     >
-                      Cart
+                      <FontAwesomeIcon icon={faCartShopping} className='text-black text-4xl'/>
                       <sup className="absolute top-0 right-0 text-xs text-white bg-red-600 rounded-full px-2 py-1">
                         {items.length}
                       </sup>

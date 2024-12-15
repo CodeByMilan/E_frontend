@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import Home from "./pages/home/Home";
@@ -20,6 +20,7 @@ export const socket = io("http://localhost:3000", {
   },
 });
 function App() {
+ 
   return (
     <>
       <Provider store={store}>

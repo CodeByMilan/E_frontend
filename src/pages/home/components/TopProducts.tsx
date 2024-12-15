@@ -19,9 +19,9 @@ const TopProducts = () => {
   console.log(product)
   return (
     <>
-      <section className="py-10" id="services">
+      <section className="py-4 m-2">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Customer favourite</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">Products</h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 m-2 p-2">
   {product.length > 0 &&

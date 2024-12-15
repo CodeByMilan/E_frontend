@@ -70,9 +70,9 @@ export const { setOrder, setCheckoutStaus,setStatus, setKhaltiUrl ,setMyOrders,s
 export default orderSlice.reducer;
 
 export function orderItem(data: OrderData) {
-  console.log("Dispatching action with data:", data);
+  //console.log("Dispatching action with data:", data);
   return async function orderItemThunk(dispatch: AppDispatch) {
-    console.log("Dispatching action with data:", data);
+   // console.log("Dispatching action with data:", data);
     dispatch(setCheckoutStaus(authStatus.loading));
     try {
       const response = await APIAuthenticated.post("/order", data);
