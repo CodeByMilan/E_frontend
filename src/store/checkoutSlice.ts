@@ -7,6 +7,7 @@ import {
   OrderResponseData,
   OrderResponseItem,
   OrderStatus,
+  PaymentStatus,
 } from "../storetypes/checkoutTypes";
 import { AppDispatch } from "./store";
 import { APIAuthenticated } from "../http";
@@ -62,11 +63,31 @@ const orderSlice = createSlice({
       const orderId = action.payload.orderId
       const updatedOrder = state.myOrders.map(order=>order.id == orderId ? {...order,orderStatus : status} : order)
       state.myOrders = updatedOrder
+  },
+  updatePaymentStatus(
+    state: OrderResponseData,
+    action: PayloadAction<{ status: PaymentStatus; orderId: string }>
+  ) {
+      console.log("Debugging paymentStatusUpdate",action.payload);
+    const { status, orderId } = action.payload;
+    const updatedOrders = state.myOrders.map((order) => {
+      if (order.id === orderId) {
+        return {
+          ...order,
+          Payment: {
+            ...order.Payment,
+            paymentStatus: status,
+          },
+        };
+      }
+      return order;
+    });
+    state.myOrders = updatedOrders;
   }
   },
 });
 
-export const { setOrder, setCheckoutStaus,setStatus, setKhaltiUrl ,setMyOrders,setMyOrderDetails,updateOrderStatus} = orderSlice.actions;
+export const { setOrder, setCheckoutStaus,setStatus, setKhaltiUrl ,setMyOrders,setMyOrderDetails,updateOrderStatus,updatePaymentStatus} = orderSlice.actions;
 export default orderSlice.reducer;
 
 export function orderItem(data: OrderData) {
@@ -132,4 +153,9 @@ export function fetchMyOrders() {
     return async function updateOrderStatusInStoreThunk(dispatch: AppDispatch) {
       dispatch(updateOrderStatus(data))
   }
+}
+export function updatePaymentStatusInStore(data:any){
+  return async function updatePaymentStatusInStoreThunk(dispatch: AppDispatch) {
+    dispatch(updatePaymentStatus(data))
+}
 }

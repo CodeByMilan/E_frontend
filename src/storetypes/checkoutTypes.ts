@@ -45,10 +45,9 @@ export enum OrderStatus{
 interface Payment{
     paymentMethod:PaymentMethod,   
 }
-enum PaymentStatus{
-    Paid="paid",
-    Unpaid="unpaid",
-    Pending="pending"
+ export enum PaymentStatus{
+    paid="paid",
+    unpaid="unpaid",
 }
 
 interface OrderPaymentData extends Payment{

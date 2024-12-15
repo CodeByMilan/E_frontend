@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../../globals/components/navbar/Navbar'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { fetchMyOrders, setCheckoutStaus, updateOrderStatusInStore } from '../../store/checkoutSlice'
+import { fetchMyOrders, setCheckoutStaus, updateOrderStatusInStore, updatePaymentStatusInStore } from '../../store/checkoutSlice'
 import { OrderStatus } from '../../storetypes/checkoutTypes'
 import { socket } from '../../App'
 import { authStatus } from '../../storetypes/storeTypes'
@@ -23,17 +23,23 @@ export const MyOrders = () => {
     const [searchTerm , setSearchTerm]=useState<string>("")
     //console.log(selectedItem)
     const [date,setDate]=useState<string>("")
-    
+    //searching implementation in orders
   const filterOrders=  myOrders.filter((order)=> selectedItem===OrderStatus.all || order.orderStatus === selectedItem).filter((order)=>order.id.toLowerCase().includes(searchTerm) || order.Payment.paymentMethod.toLowerCase().includes(searchTerm)||order.totalAmount.toString().includes(searchTerm)).filter((order)=>date ==""||new Date(order.createdAt).toLocaleDateString()===new Date(date).toLocaleDateString())
  //socket implementation
   useEffect(() => {
+    //console.log("hello from usdeEffects")
     socket.on("statusUpdated", (data: any) => {
       console.log("Received status update:", data);
       dispatch(updateOrderStatusInStore(data));
     });
+    socket.on("paymentStatusChanged", (data: any) => {
+        console.log("Received payment update:", data);
+        dispatch(updatePaymentStatusInStore(data));
+      });
   
     return () => {
       socket.off("statusUpdated");
+      socket.off("paymentStatusChanged");
     };
   }, []);
   
