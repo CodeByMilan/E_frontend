@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { useNavigate } from 'react-router-dom'
 import { authStatus } from '../../../storetypes/storeTypes'
 import { UserloginType } from '../types'
+import Footer from '../../../globals/components/footer/Footer'
 
 const Login = () => {
   const {status}=useAppSelector((state)=>state.auth)
@@ -34,6 +35,7 @@ const Login = () => {
     <>
     <Navbar/>
       <Form type="Login" onSubmit={handlelogin} error={error} onClearError={clearError}/>
+      <Footer/>
     </>
   )
 }

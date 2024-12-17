@@ -3,6 +3,7 @@ import Navbar from "../../globals/components/navbar/Navbar"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { fetchMyOrderDetails } from "../../store/checkoutSlice"
 import { useParams } from "react-router-dom"
+import Footer from "../../globals/components/footer/Footer"
 
 const MyOrderDetails = () => {
     const {id} =useParams()
@@ -141,6 +142,7 @@ const MyOrderDetails = () => {
       
     </div>
   </div>
+  <Footer/>
     </>
 
   )

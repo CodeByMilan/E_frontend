@@ -3,6 +3,7 @@ import Navbar from '../../globals/components/navbar/Navbar'
 import Hero from './components/Hero'
 import TopProducts from './components/TopProducts'
 import { useAppSelector } from '../../store/hooks'
+import Footer from '../../globals/components/footer/Footer'
 
 const Home = () => {
   const {user,status}=useAppSelector((state)=>state.auth)
@@ -14,6 +15,7 @@ const Home = () => {
    <Navbar/>
    <Hero/>
    <TopProducts/>
+   <Footer/>
    </>
   )
 }

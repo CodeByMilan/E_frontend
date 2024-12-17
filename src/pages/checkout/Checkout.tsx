@@ -6,6 +6,7 @@ import { orderItem } from "../../store/checkoutSlice";
 import { authStatus } from "../../storetypes/storeTypes";
 import { Link, useNavigate } from "react-router-dom";
 import { setItems } from "../../store/cartSlice";
+import Footer from "../../globals/components/footer/Footer";
 
 const Checkout = () => {
   const [message, setMessage] = useState<string | null>(null);
@@ -100,14 +101,13 @@ const Checkout = () => {
       )}
       <div className="font-[sans-serif] bg-white">
         <div className="flex max-sm:flex-col gap-12 max-lg:gap-4 h-full">
-          {/* Sidebar with Cart Items */}
           <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 sm:h-screen sm:sticky sm:top-0 lg:min-w-[370px] sm:min-w-[300px]">
-            <div className="relative h-full">
-              <div className="px-4 py-8 sm:overflow-auto sm:h-[calc(100vh-60px)]">
+            <div className="relative ">
+              <div className="px-4 py-8  sm:overflow-auto sm:h-[calc(100vh-60px)]">
                 {items.length > 0 &&
                   items.map((item) => (
                     <div key={item.Product.id} className="flex items-start gap-4">
-                      <div className="w-32 h-28 flex p-3 bg-gray-300 rounded-md">
+                      <div className="w-32 h-28 flex mb-5 p-2 bg-gray-300 rounded-md">
                         <img src={item.Product.productImageUrl} className="w-full object-contain" />
                       </div>
                       <div className="w-full">
@@ -119,10 +119,11 @@ const Checkout = () => {
                       </div>
                     </div>
                   ))}
+                <div className="p-4 bg-gray-800">
+                  <h4 className="text-white">Sub Total: ${SubTotal}</h4>
+                </div>
               </div>
-              <div className="p-4 bg-gray-800">
-                <h4 className="text-white">Sub Total: ${SubTotal}</h4>
-              </div>
+
             </div>
           </div>
 
@@ -175,9 +176,8 @@ const Checkout = () => {
               </div>
               <button
                 type="submit"
-                className={`mt-8 w-full py-3 rounded-md ${
-                  paymentMethod === PaymentMethod.khalti ? "bg-purple-600" : "bg-blue-600"
-                } text-white`}
+                className={`mt-8 w-full py-3 rounded-md ${paymentMethod === PaymentMethod.khalti ? "bg-purple-600" : "bg-blue-600"
+                  } text-white`}
               >
                 {paymentMethod === PaymentMethod.khalti ? "Pay with Khalti" : "Complete Purchase"}
               </button>
@@ -188,6 +188,7 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

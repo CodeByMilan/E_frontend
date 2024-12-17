@@ -30,7 +30,7 @@ const cartSlice = createSlice({
       state.items.splice(index,1)
     },
     setUpdateItem(state:cartState,action:PayloadAction<UpdateAction>){
-      const index =state.items.findIndex(item=>item.Product.id=action.payload.productId)
+      const index =state.items.findIndex(item=>item.Product.id===action.payload.productId)
       if(index!==-1){
       state.items[index].quantity=action.payload.quantity
     }
@@ -105,7 +105,6 @@ export function updateCartItem(productId:string,quantity:number) {
       })
       if (response.status == 200) {
         dispatch(setStatus(authStatus.success));
-
         dispatch(setUpdateItem({productId,quantity}));
       } else {
         dispatch(setStatus(authStatus.error));

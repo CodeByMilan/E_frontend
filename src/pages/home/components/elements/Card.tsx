@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { addToCart } from '../../../../store/cartSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartPlus, faHeart } from '@fortawesome/free-solid-svg-icons';
+import PopUp from '../../../../globals/components/popUp/PopUp';
 
 interface CardProps {
   data: Product;
@@ -15,10 +16,14 @@ const Card: React.FC<CardProps> = ({ data }) => {
 
   const [showFullDescription, setShowFullDescription] = useState(false);
   const dispatch = useAppDispatch();
-  const [error, setError] = useState<string | null>(null); 
+  const [error, setError] = useState<string | null>(null);
+  const [modalMessage, setModalMessage] = useState<string>(""); 
+  const [modalType, setModalType] = useState<"success" | "error" | null>(null); 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); 
+
   const { user } = useAppSelector((state) => state.auth);
   const token = user?.token;
-  console.log(token);
+
   const descriptionWords = data.description?.split(' ') || [];
   const truncatedDescription = descriptionWords.slice(0, 20).join(' ');
 
@@ -28,19 +33,25 @@ const Card: React.FC<CardProps> = ({ data }) => {
 
   const handleAddToCart = () => {
     if (!token) {
-      setError("Please log in to add the product to the cart.");
+      setModalMessage("Please log in to add the product to the cart.");
+      setModalType("error");
+      setIsModalOpen(true); 
       return;
     }
-    // If logged in, dispatch the addToCart action
     dispatch(addToCart(data.id));
+    setModalMessage("Your product has been successfully added to the cart! 🎉");
+    setModalType("success");
+    setIsModalOpen(true);
   };
 
   const handleAddToWishlist = () => {
     if (!token) {
-      setError("Please log in to add the product to the wishlist.");
+      setModalMessage("Please log in to add the product to the wishlist.");
+      setModalType("error");
+      setIsModalOpen(true); 
       return;
     }
-  
+    //will do in future 
   };
 
   return (
@@ -61,7 +72,7 @@ const Card: React.FC<CardProps> = ({ data }) => {
       <div className="mt-8 w-full">
         <h4 className="font-bold text-xl">{data?.productName}</h4>
         <p className="mt-2 text-gray-600">Rs {data?.price}</p>
-        
+
         <p className="mt-2 text-gray-600">
           {showFullDescription
             ? data?.description
@@ -75,19 +86,16 @@ const Card: React.FC<CardProps> = ({ data }) => {
             See More
           </button>
         )}
-         
+
         <div className="flex gap-10 mt-5 ml-5">
-          {/* Add to Wishlist Button with Heart Icon */}
           <button
             type="button"
             onClick={handleAddToWishlist}
             className="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-5 py-3 text-lg font-medium leading-4 text-white shadow-sm hover:bg-gray-950"
           >
             <FontAwesomeIcon icon={faHeart} className="mr-2 text-red-500" />
-    
           </button>
-          
-          {/* Add to Cart Button with Cart Icon */}
+
           <button
             type="button"
             onClick={handleAddToCart}
@@ -96,9 +104,29 @@ const Card: React.FC<CardProps> = ({ data }) => {
             <FontAwesomeIcon icon={faCartPlus} className="mr-2 text-white" />
           </button>
         </div>
-
-        {error && <p className="text-red-500 mt-2">{error}</p>} {/* Display error if user is not logged in */}
       </div>
+
+      <PopUp
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        confirmText="OK"
+        onConfirm={() => {
+          setIsModalOpen(false);
+          if (modalType === "error") {
+          
+          }
+        }}
+        showCancelButton={false}
+      >
+        <div className="flex justify-center mb-4">
+          <div className={`w-12 h-12 flex items-center justify-center rounded-full ${modalType === "error" ? "bg-red-600" : "bg-green-600"}`}>
+            <span className="text-white text-3xl font-bold">!</span>
+          </div>
+        </div>
+        <p className={`text-center ${modalType === "success" ? "text-green-600" : "text-red-600"}`}>
+          {modalMessage}
+        </p>
+      </PopUp>
     </>
   );
 };

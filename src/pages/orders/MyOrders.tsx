@@ -6,6 +6,7 @@ import { fetchMyOrders, setCheckoutStaus, updateOrderStatusInStore, updatePaymen
 import { OrderStatus } from '../../storetypes/checkoutTypes'
 import { socket } from '../../App'
 import { authStatus } from '../../storetypes/storeTypes'
+import Footer from '../../globals/components/footer/Footer'
 
 export const MyOrders = () => {
     const dispatch=useAppDispatch()
@@ -189,6 +190,7 @@ export const MyOrders = () => {
         </div>
     </div>
 </div>
+<Footer/>
 
     </>
   )
