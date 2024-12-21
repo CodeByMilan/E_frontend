@@ -16,7 +16,6 @@ const Card: React.FC<CardProps> = ({ data }) => {
 
   const [showFullDescription, setShowFullDescription] = useState(false);
   const dispatch = useAppDispatch();
-  const [error, setError] = useState<string | null>(null);
   const [modalMessage, setModalMessage] = useState<string>(""); 
   const [modalType, setModalType] = useState<"success" | "error" | null>(null); 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); 
