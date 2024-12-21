@@ -19,6 +19,7 @@ const SingleProduct = () => {
     const { status: cartStatus } = useAppSelector((state) => state.cart);
     const { user } = useAppSelector((state) => state.auth);
     const token = user?.token;
+    console.log("single page ",token)
     const navigate = useNavigate(); 
 
     useEffect(() => {

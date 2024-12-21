@@ -87,6 +87,7 @@ const Checkout = () => {
   return (
     <>
       <Navbar />
+      
       {message && (
         <div className="mb-4 p-4 bg-green-100 text-black rounded flex justify-between items-center">
           <span>{message}</span>
