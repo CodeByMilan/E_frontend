@@ -46,7 +46,23 @@ export function fetchProducts() {
     }
   };
 }
-
+export function fetchTopProducts() {
+  return async function fetchTopProductsThunk(dispatch: AppDispatch) {
+    dispatch(setStatus(authStatus.loading));
+    try {
+      const response = await API.get("/product/top");
+      if (response.status == 200) {
+        const { data } = response.data;
+        dispatch(setStatus(authStatus.success));
+        dispatch(setProduct(data));
+      } else {
+        dispatch(setStatus(authStatus.error));
+      }
+    } catch (error) {
+      dispatch(setStatus(authStatus.error));
+    }
+  };
+}
 export function fetchProductById(productId: string) {
   return async function fetchProductByIdThunk(dispatch: AppDispatch, getState: () => RootState) {
     const state = getState();
