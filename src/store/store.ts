@@ -5,13 +5,15 @@ import authSlice from "./authSlice";
 import productSlice from "./productSlice";
 import cartSlice from "./cartSlice";
 import checkoutSlice from "./checkoutSlice";
+import searchSlice from "./searchSlice";
 
 const store =configureStore ({
     reducer: {
         auth:authSlice,
         products:productSlice,
         cart:cartSlice,
-        order:checkoutSlice
+        order:checkoutSlice,
+        search:searchSlice
     }
 })
 export default store;

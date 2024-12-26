@@ -10,7 +10,7 @@ import {
   PaymentStatus,
 } from "../storetypes/checkoutTypes";
 import { AppDispatch } from "./store";
-import { APIAuthenticated } from "../http";
+import { API, APIAuthenticated } from "../http";
 
 const initialState: OrderResponseData = {
   items: [],
@@ -133,12 +133,12 @@ export function fetchMyOrders() {
   export function fetchMyOrderDetails(id:string) {
     return async function fetchMyOrderDetailsThunk(dispatch: AppDispatch) {
       dispatch(setStatus(authStatus.loading));
-      console.log("hello")
+     
       try {
         const response = await APIAuthenticated.get(`/order/customer/${id}`);
-        console.log("bye")
+    
         if ((response.status = 200)) {
-          console.log("hello")
+         
           dispatch(setStatus(authStatus.success));
           dispatch(setMyOrderDetails(response.data.data));
         } else {
@@ -159,3 +159,21 @@ export function updatePaymentStatusInStore(data:any){
     dispatch(updatePaymentStatus(data))
 }
 }
+export function  verifyPaymentStatus(pidx:string){
+  return async function verifyPaymentStatusThunk(dispatch:AppDispatch) {
+    console.log(pidx)
+    dispatch(setStatus(authStatus.loading));
+    try {
+      const response = await APIAuthenticated.post(`/order/verify`,{pidx});
+      if ((response.status = 200)) {
+       // console.log(response.data)
+        dispatch(setStatus(authStatus.success));
+      } else {
+        dispatch(setStatus(authStatus.error));
+      }
+    } catch (error) {
+      dispatch(setStatus(authStatus.error));
+    }
+  };
+}
+    

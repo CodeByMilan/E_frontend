@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
 import { resetToken } from '../../../store/authSlice'
@@ -6,13 +6,14 @@ import { fetchCartItems } from '../../../store/cartSlice'
 import logoSajhaPasal from '../../../assets/logoSajhaPasal.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faHeart} from '@fortawesome/free-solid-svg-icons'
+import { setSearchQuery } from '../../../store/searchSlice'
 
 const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const [query, setQuery] = useState<string>("");
   const { user } = useAppSelector((state) => state.auth)
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
-
   const { items } = useAppSelector((state) => state.cart)
 
   useEffect(() => {
@@ -29,6 +30,10 @@ const Navbar = () => {
     navigate("/login")
   }
 
+  const handleSearch = (e:ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    dispatch(setSearchQuery(e.target.value)); 
+  };
   return (
     <>
       <nav className="bg-white shadow-lg dark:bg-gray-900">
@@ -47,6 +52,14 @@ const Navbar = () => {
                   className="block py-2 px-2 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
                 >
                   Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/product"
+                  className="block py-2 px-2 text-gray-900 rounded-md hover:bg-blue-500 hover:text-white md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 transition duration-300 ease-in-out"
+                >
+                  Shop Now
                 </Link>
               </li>
 
@@ -155,7 +168,9 @@ const Navbar = () => {
               type="text"
               id="search-navbar"
               className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 transition duration-300 ease-in-out"
-              placeholder="Search..."
+              placeholder="Search Products"
+              value={query}
+              onChange={handleSearch}
             />
           </div>
         </div>

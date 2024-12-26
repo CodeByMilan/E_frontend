@@ -13,6 +13,7 @@ import MyOrderDetails from "./pages/orders/MyOrderDetails";
 import { io } from "socket.io-client";
 import Protected from "./Protected";
 import PaymentSuccess from "./pages/checkout/PaymentSuccess";
+import Product from "./pages/product/Product";
 
 export const socket = io("http://localhost:3000", {
   auth: {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/product" element={<Product/>}/>
             <Route path="product/:id" element={<SingleProduct />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout" element={<Checkout />} />
