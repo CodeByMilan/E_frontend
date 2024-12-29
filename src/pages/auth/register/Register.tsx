@@ -34,6 +34,7 @@ const Register = () => {
   },[status,navigate,dispatch])
   const clearError = () => {
     setError(null);
+    
   };
   return (
     <>

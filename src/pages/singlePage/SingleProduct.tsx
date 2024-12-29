@@ -11,7 +11,7 @@ import PopUp from "../../globals/components/popUp/PopUp";
 const SingleProduct = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>("");
-    const [modalType, setModalType] = useState<"success" | "error" | null>(null); // Track modal type
+    const [modalType, setModalType] = useState<"success" | "error" | null>(null);
 
     const { id } = useParams();
     const dispatch = useAppDispatch();

@@ -11,7 +11,7 @@ import Checkout from "./pages/checkout/Checkout";
 import { MyOrders } from "./pages/orders/MyOrders";
 import MyOrderDetails from "./pages/orders/MyOrderDetails";
 import { io } from "socket.io-client";
-import Protected from "./Protected";
+import Protected from "./validation/Protected";
 import PaymentSuccess from "./pages/checkout/PaymentSuccess";
 import Product from "./pages/product/Product";
 

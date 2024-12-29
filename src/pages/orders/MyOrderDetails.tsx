@@ -1,23 +1,43 @@
 import { useEffect } from "react"
 import Navbar from "../../globals/components/navbar/Navbar"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
-import { fetchMyOrderDetails } from "../../store/checkoutSlice"
+import { fetchMyOrderDetails, updateOrderStatusInStore, updatePaymentStatusInStore } from "../../store/checkoutSlice"
 import { useParams } from "react-router-dom"
 import Footer from "../../globals/components/footer/Footer"
+import { socket } from "../../App"
 
 const MyOrderDetails = () => {
   const { id } = useParams()
   console.log(id)
-  const dipatch = useAppDispatch()
+  const dispatch = useAppDispatch()
   const { myOrderDetails } = useAppSelector((state) => state.order)
   console.log(myOrderDetails[0])
 
   useEffect(() => {
     console.log("hello from myorderdetails")
     if (id) {
-      dipatch(fetchMyOrderDetails(id))
+      dispatch(fetchMyOrderDetails(id))
+
     }
-  }, [id, dipatch])
+  }, [id, dispatch])
+
+  //socket implementation
+  useEffect(() => {
+    //console.log("hello from usdeEffects")
+    socket.on("statusUpdated", (data: any) => {
+      console.log("Received status update:", data);
+      dispatch(updateOrderStatusInStore(data));
+    });
+    socket.on("paymentStatusChanged", (data: any) => {
+        console.log("Received payment update:", data);
+        dispatch(updatePaymentStatusInStore(data));
+      });
+  
+    return () => {
+      socket.off("statusUpdated");
+      socket.off("paymentStatusChanged");
+    };
+  }, []);
   if (myOrderDetails.length === 0) {
     return <p>Loading...</p>;
   }

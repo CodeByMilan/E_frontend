@@ -1,13 +1,14 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { FormProps, UserDataTypes } from "../types";
+import { registerSchema } from "../../../validation/inputValidation";
 const Form:React.FC <FormProps> = ({ type,onSubmit,error,onClearError} ) => {
   const [userData,setUserData]=useState<UserDataTypes>({
     email:"",
     password:"",
     username:""
   })
-
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const handleChange=(e:ChangeEvent<HTMLInputElement>)=>{
 const {name,value}=e.target
 setUserData({
@@ -18,22 +19,36 @@ setUserData({
   }
   const handleSubmit=(e:FormEvent<HTMLFormElement>)=>{
     e.preventDefault()
+    if(type==="Register"){
+      const result = registerSchema.safeParse(userData);
+      if (!result.success) {
+        const errors = result.error.errors.map((err) => err.message);
+        setValidationErrors(errors);
+        return;
+      }
+    }
+    setValidationErrors([]); 
     onSubmit(userData)
   }
+  const showError = error || validationErrors.length > 0;
   return (
     <>
-    {error && (
-      <div className="mb-4 p-4 bg-red-100 text-red-800 rounded flex justify-between items-center">
-        <span>{error}</span>
-        <button
-          className="ml-4 text-red-800 font-bold hover:text-red-600 focus:outline-none"
-          onClick={onClearError}
-          aria-label="Dismiss error"
+    {showError && (
+        <div
+          className={`mb-4 p-4 rounded flex justify-between items-center ${
+            error ? "bg-red-100 text-red-800" : "bg-yellow-100 text-yellow-800"
+          }`}
         >
-          ×
-        </button>
-      </div>
-    )}
+          <span>{error || validationErrors.join(", ")}</span>
+          <button
+            className="ml-4 font-bold hover:text-red-600 focus:outline-none"
+            onClick={onClearError}
+            aria-label="Dismiss error"
+          >
+            ×
+          </button>
+        </div>
+      )}
       <div className="flex items-center mt-0 justify-center h-screen">
         <div className="shadow-md p-10 w-[60%] max-w-md">
         

@@ -10,7 +10,7 @@ import {
   PaymentStatus,
 } from "../storetypes/checkoutTypes";
 import { AppDispatch } from "./store";
-import { API, APIAuthenticated } from "../http";
+import {  APIAuthenticated } from "../http";
 
 const initialState: OrderResponseData = {
   items: [],
@@ -62,8 +62,18 @@ const orderSlice = createSlice({
       const status = action.payload.status 
       const orderId = action.payload.orderId
       const updatedOrder = state.myOrders.map(order=>order.id == orderId ? {...order,orderStatus : status} : order)
+      // console.log(updatedOrder)
       state.myOrders = updatedOrder
-  },
+      if (state.myOrderDetails[0]?.Order?.id === orderId) {
+        state.myOrderDetails[0] = {
+          ...state.myOrderDetails[0],
+          Order: {
+            ...state.myOrderDetails[0].Order,
+            orderStatus: status, 
+          },
+        };
+      }
+    },
   updatePaymentStatus(
     state: OrderResponseData,
     action: PayloadAction<{ status: PaymentStatus; orderId: string }>

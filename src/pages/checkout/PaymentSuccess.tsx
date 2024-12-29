@@ -30,11 +30,12 @@ const PaymentSuccess = () => {
           setMessage('Payment verified successfully !!')
           setLoading(false)
         }
+        else {
+          setMessage('Payment verification failed. Missing payment ID.');
+          setLoading(false);
+        }
       })
-    } else {
-      setMessage('Payment verification failed. Missing payment ID.');
-      setLoading(false);
-    }
+    } 
   }, [location]);
  
  return (

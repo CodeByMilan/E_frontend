@@ -81,8 +81,5 @@ export interface OrderDetails {
     quantity:number,
     orderId:String,
     Product:Product,
-    Order:MyOrderData
-    
-
-
+    Order:MyOrderData,
 }
