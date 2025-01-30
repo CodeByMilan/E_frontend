@@ -3,6 +3,7 @@ import { CartItem, cartState } from "../storetypes/cartTypes";
 import { authStatus } from "../storetypes/storeTypes";
 import { AppDispatch } from "./store";
 import { APIAuthenticated } from "../http";
+import axios from "axios";
 
 const initialState: cartState = {
   items: [],
@@ -43,7 +44,9 @@ export default cartSlice.reducer;
 export function addToCart(productId: string) {
   return async function addToCartThunk(dispatch: AppDispatch) {
     dispatch(setStatus(authStatus.loading));
+    
     try {
+      console.log(localStorage.getItem("token"))
       const response = await APIAuthenticated.post("/customer/cart", {
         productId,
         quantity: 1,

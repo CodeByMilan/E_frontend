@@ -7,6 +7,7 @@ import logoSajhaPasal from '../../../assets/logoSajhaPasal.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faHeart} from '@fortawesome/free-solid-svg-icons'
 import { setSearchQuery } from '../../../store/searchSlice'
+import { Mobile } from './Mobile'
 
 const Navbar = () => {
   const navigate = useNavigate()
@@ -36,8 +37,9 @@ const Navbar = () => {
   };
   return (
     <>
-      <nav className="bg-white shadow-lg dark:bg-gray-900">
-        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    
+      <nav className="bg-white shadow-lg dark:bg-gray-900"><Mobile/>
+        <div className="sm:  hidden xl:max-w-screen-xl xl:flex xl:flex-wrap items-center justify-between mx-auto p-4 ">
           <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
             <img src={logoSajhaPasal} className="h-16 w-16 mx-2 rounded-full shadow-md" alt="Sajha Pasal logo" />
             <span className="self-center text-4xl font-semibold text-black dark:text-white hover:text-black transition duration-300 ease-in-out">
