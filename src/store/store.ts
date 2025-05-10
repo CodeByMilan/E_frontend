@@ -2,9 +2,9 @@
 
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./authSlice";
-import productSlice from "./productSlice";
 import cartSlice from "./cartSlice";
 import checkoutSlice from "./checkoutSlice";
+import productSlice from "./productSlice";
 import searchSlice from "./searchSlice";
 
 const store =configureStore ({

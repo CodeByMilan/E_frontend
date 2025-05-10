@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { authStatus } from "../storetypes/storeTypes";
+import { APIAuthenticated } from "../http";
 import {
-    MyOrderData,
+  MyOrderData,
   OrderData,
   OrderDetails,
   OrderResponseData,
@@ -9,8 +9,8 @@ import {
   OrderStatus,
   PaymentStatus,
 } from "../storetypes/checkoutTypes";
+import { authStatus } from "../storetypes/storeTypes";
 import { AppDispatch } from "./store";
-import {  APIAuthenticated } from "../http";
 
 const initialState: OrderResponseData = {
   items: [],

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../../globals/components/navbar/Navbar'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { fetchMyOrders, setCheckoutStaus, updateOrderStatusInStore, updatePaymentStatusInStore } from '../../store/checkoutSlice'
-import { OrderStatus } from '../../storetypes/checkoutTypes'
 import { socket } from '../../App'
-import { authStatus } from '../../storetypes/storeTypes'
 import Footer from '../../globals/components/footer/Footer'
+import Navbar from '../../globals/components/navbar/Navbar'
+import { fetchMyOrders, setCheckoutStaus, updateOrderStatusInStore, updatePaymentStatusInStore } from '../../store/checkoutSlice'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { OrderStatus } from '../../storetypes/checkoutTypes'
+import { authStatus } from '../../storetypes/storeTypes'
 
 export const MyOrders = () => {
     const dispatch=useAppDispatch()

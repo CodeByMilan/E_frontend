@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { API } from "../http";
 import { authStatus } from "../storetypes/storeTypes";
-import {API} from "../http";
 
 interface RegisterUser {
   email: string;

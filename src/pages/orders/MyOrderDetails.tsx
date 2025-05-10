@@ -1,10 +1,10 @@
 import { useEffect } from "react"
-import Navbar from "../../globals/components/navbar/Navbar"
-import { useAppDispatch, useAppSelector } from "../../store/hooks"
-import { fetchMyOrderDetails, updateOrderStatusInStore, updatePaymentStatusInStore } from "../../store/checkoutSlice"
 import { useParams } from "react-router-dom"
-import Footer from "../../globals/components/footer/Footer"
 import { socket } from "../../App"
+import Footer from "../../globals/components/footer/Footer"
+import Navbar from "../../globals/components/navbar/Navbar"
+import { fetchMyOrderDetails, updateOrderStatusInStore, updatePaymentStatusInStore } from "../../store/checkoutSlice"
+import { useAppDispatch, useAppSelector } from "../../store/hooks"
 
 const MyOrderDetails = () => {
   const { id } = useParams()

@@ -1,9 +1,9 @@
-import{ useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Navbar from '../../globals/components/navbar/Navbar';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../../globals/components/footer/Footer';
+import Navbar from '../../globals/components/navbar/Navbar';
+import { verifyPaymentStatus } from '../../store/checkoutSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {  verifyPaymentStatus } from '../../store/checkoutSlice';
 import { authStatus } from '../../storetypes/storeTypes';
 
 const PaymentSuccess = () => {

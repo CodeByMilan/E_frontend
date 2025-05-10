@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Footer from "../../globals/components/footer/Footer";
+import Navbar from "../../globals/components/navbar/Navbar";
+import PopUp from "../../globals/components/popUp/PopUp";
+import { addToCart, setStatus } from "../../store/cartSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { fetchProductById } from "../../store/productSlice";
-import { addToCart, setStatus } from "../../store/cartSlice";
-import Navbar from "../../globals/components/navbar/Navbar";
 import { authStatus } from "../../storetypes/storeTypes";
-import Footer from "../../globals/components/footer/Footer";
-import PopUp from "../../globals/components/popUp/PopUp";
 
 const SingleProduct = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);

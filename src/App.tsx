@@ -1,19 +1,19 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Provider } from "react-redux";
-import store from "./store/store";
-import Home from "./pages/home/Home";
-import Register from "./pages/auth/register/Register";
-import Login from "./pages/auth/login/Login";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { io } from "socket.io-client";
 import "./index.css";
-import SingleProduct from "./pages/singlePage/SingleProduct";
+import Login from "./pages/auth/login/Login";
+import Register from "./pages/auth/register/Register";
 import Cart from "./pages/cart/Cart";
 import Checkout from "./pages/checkout/Checkout";
-import { MyOrders } from "./pages/orders/MyOrders";
-import MyOrderDetails from "./pages/orders/MyOrderDetails";
-import { io } from "socket.io-client";
-import Protected from "./validation/Protected";
 import PaymentSuccess from "./pages/checkout/PaymentSuccess";
+import Home from "./pages/home/Home";
+import MyOrderDetails from "./pages/orders/MyOrderDetails";
+import { MyOrders } from "./pages/orders/MyOrders";
 import Product from "./pages/product/Product";
+import SingleProduct from "./pages/singlePage/SingleProduct";
+import store from "./store/store";
+import Protected from "./validation/Protected";
 
 export const socket = io("http://localhost:3000", {
   auth: {

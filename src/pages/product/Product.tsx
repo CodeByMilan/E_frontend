@@ -1,10 +1,10 @@
 import { useEffect } from "react"
+import Footer from "../../globals/components/footer/Footer"
+import Navbar from "../../globals/components/navbar/Navbar"
 import { useAppDispatch, useAppSelector } from "../../store/hooks"
 import { fetchProducts } from "../../store/productSlice"
 import { authStatus } from "../../storetypes/storeTypes"
 import Card from "../home/components/elements/Card"
-import Navbar from "../../globals/components/navbar/Navbar"
-import Footer from "../../globals/components/footer/Footer"
 
 
 const Product = () => {

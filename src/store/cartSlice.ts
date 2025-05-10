@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { APIAuthenticated } from "../http";
 import { CartItem, cartState } from "../storetypes/cartTypes";
 import { authStatus } from "../storetypes/storeTypes";
 import { AppDispatch } from "./store";
-import { APIAuthenticated } from "../http";
-import axios from "axios";
 
 const initialState: cartState = {
   items: [],

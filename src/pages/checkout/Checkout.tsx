@@ -1,12 +1,12 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Footer from "../../globals/components/footer/Footer";
 import Navbar from "../../globals/components/navbar/Navbar";
+import { setItems } from "../../store/cartSlice";
+import { orderItem } from "../../store/checkoutSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { ItemDetails, OrderData, PaymentMethod } from "../../storetypes/checkoutTypes";
-import { orderItem } from "../../store/checkoutSlice";
 import { authStatus } from "../../storetypes/storeTypes";
-import { Link, useNavigate } from "react-router-dom";
-import { setItems } from "../../store/cartSlice";
-import Footer from "../../globals/components/footer/Footer";
 
 const Checkout = () => {
   const [message, setMessage] = useState<string | null>(null);

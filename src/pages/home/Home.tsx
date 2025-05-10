@@ -1,10 +1,9 @@
-import React from 'react'
-import Navbar from '../../globals/components/navbar/Navbar'
-import Hero from './components/Hero'
-import TopProducts from './components/TopProducts'
-import { useAppSelector } from '../../store/hooks'
 import Footer from '../../globals/components/footer/Footer'
+import Navbar from '../../globals/components/navbar/Navbar'
+import { useAppSelector } from '../../store/hooks'
+import Hero from './components/Hero'
 import Review from './components/Review'
+import TopProducts from './components/TopProducts'
 
 const Home = () => {
   const {user,status}=useAppSelector((state)=>state.auth)

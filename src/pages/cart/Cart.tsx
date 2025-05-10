@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import Navbar from '../../globals/components/navbar/Navbar'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { deleteCartItem, updateCartItem } from '../../store/cartSlice'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Footer from '../../globals/components/footer/Footer'
-import PopUp from '../../globals/components/popUp/PopUp'  
+import Navbar from '../../globals/components/navbar/Navbar'
+import PopUp from '../../globals/components/popUp/PopUp'
+import { deleteCartItem, updateCartItem } from '../../store/cartSlice'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 
 const Cart = () => {
   const { items } = useAppSelector((state) => state.cart)

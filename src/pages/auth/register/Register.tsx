@@ -1,12 +1,12 @@
-import  { useEffect, useState } from 'react'
-import Navbar from '../../../globals/components/navbar/Navbar'
-import Form from '../form/Form'
-import { UserDataTypes } from '../types'
-import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { register, resetStatus } from '../../../store/authSlice'
-import { authStatus } from '../../../storetypes/storeTypes'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Footer from '../../../globals/components/footer/Footer'
+import Navbar from '../../../globals/components/navbar/Navbar'
+import { register, resetStatus } from '../../../store/authSlice'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { authStatus } from '../../../storetypes/storeTypes'
+import Form from '../form/Form'
+import { UserDataTypes } from '../types'
 
 
 const Register = () => {
