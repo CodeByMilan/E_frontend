@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import Card from './elements/Card'
-import { useAppDispatch } from '../../../store/hooks'
-import { useAppSelector } from '../../../store/hooks'
-import {fetchTopProducts } from '../../../store/productSlice'
+import { useEffect } from 'react'
+import { useAppDispatch, useAppSelector } from '../../../store/hooks'
+import { fetchTopProducts } from '../../../store/productSlice'
 import { authStatus } from '../../../storetypes/storeTypes'
+import Card from './elements/Card'
 
 
 const TopProducts = () => {
