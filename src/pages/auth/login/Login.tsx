@@ -1,12 +1,12 @@
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Footer from '../../../globals/components/footer/Footer'
 import Navbar from '../../../globals/components/navbar/Navbar'
-import Form from '../form/Form'
 import { login, resetStatus } from '../../../store/authSlice'
 import { useAppDispatch, useAppSelector } from '../../../store/hooks'
-import { useNavigate } from 'react-router-dom'
 import { authStatus } from '../../../storetypes/storeTypes'
+import Form from '../form/Form'
 import { UserloginType } from '../types'
-import Footer from '../../../globals/components/footer/Footer'
 
 const Login = () => {
   const {status}=useAppSelector((state)=>state.auth)

@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
-import { FormProps, UserDataTypes } from "../types";
 import { registerSchema } from "../../../validation/inputValidation";
+import { FormProps, UserDataTypes } from "../types";
 const Form:React.FC <FormProps> = ({ type,onSubmit,error,onClearError} ) => {
   const [userData,setUserData]=useState<UserDataTypes>({
     email:"",
