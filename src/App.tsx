@@ -15,7 +15,7 @@ import SingleProduct from "./pages/singlePage/SingleProduct";
 import store from "./store/store";
 import Protected from "./validation/Protected";
 
-export const socket = io("http://localhost:3000", {
+export const socket = io("https://e-backend-pzfw.onrender.com", {
   auth: {
     token: localStorage.getItem("token"),
   },

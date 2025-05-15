@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Base API without authentication
 const API = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://e-backend-pzfw.onrender.com",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -11,7 +11,7 @@ const API = axios.create({
 
 // Authenticated API with dynamic token handling
 const APIAuthenticated = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://e-backend-pzfw.onrender.com",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
